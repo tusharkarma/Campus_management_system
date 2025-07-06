@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: white;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-card:hover::before {
+            left: 100%;
+        }
+
+        .login-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .student-card .card-icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .faculty-card .card-icon {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .admin-card .card-icon {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-description {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .login-btn:hover::before {
+            left: 0;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .login-options {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .login-card {
+                padding: 2rem;
+            }
+        }
+
+        .features {
+            background: rgba(255, 255, 255, 0.1);
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .features h3 {
+            color: white;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .feature-item {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            padding: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🎓 Campus Management System</h1>
+        <p>Streamlining Education Management</p>
+    </header>
+
+    <div class="main-container">
+        <div class="login-options">
+            <!-- Student Login Card -->
+            <div class="login-card student-card">
+                <div class="card-icon">
+                    👨‍🎓
+                </div>
+                <h2 class="card-title">Student Portal</h2>
+                <p class="card-description">
+                    Access your courses, grades, attendance, assignments, and personal information. 
+                    Stay updated with announcements and campus events.
+                </p>
+                <a href="{% url 'student_login' %}" class="login-btn">Student Login</a>
+            </div>
+
+            <!-- Faculty Login Card -->
+            <div class="login-card faculty-card">
+                <div class="card-icon">
+                    👨‍🏫
+                </div>
+                <h2 class="card-title">Faculty Portal</h2>
+                <p class="card-description">
+                    Manage your classes, student records, grades, attendance, and course materials. 
+                    Communicate with students and colleagues effectively.
+                </p>
+                <a href="{% url 'faculty_login' %}" class="login-btn">Faculty Login</a>
+            </div>
+
+            <!-- Admin Login Card -->
+            <div class="login-card admin-card">
+                <div class="card-icon">
+                    👨‍💼
+                </div>
+                <h2 class="card-title">Admin Portal</h2>
+                <p class="card-description">
+                    Complete system administration, user management, reports, and campus-wide 
+                    settings. Monitor and control all aspects of the campus management system.
+                </p>
+                <a href="{% url 'admin_login' %}" class="login-btn">Admin Login</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="features">
+        <h3>🚀 System Features</h3>
+        <div class="features-grid">
+            <div class="feature-item">📚 Course Management</div>
+            <div class="feature-item">👥 User Administration</div>
+            <div class="feature-item">📊 Grade Tracking</div>
+            <div class="feature-item">📅 Attendance System</div>
+            <div class="feature-item">📖 Library Management</div>
+            <div class="feature-item">💰 Fee Management</div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Campus Management System. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.login-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // Add stagger animation on page load
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>

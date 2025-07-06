@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar-brand {
+            font-weight: bold;
+        }
+        .dashboard-section {
+            margin-top: 2rem;
+        }
+        .section-title {
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        .card {
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Campus Management System</a>
+        <div class="d-flex">
+            <a href="{% url 'student_login' %}" class="btn btn-outline-light">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+    <!-- Welcome Message -->
+    <div class="mb-4">
+        <h2>Welcome, {{ student.user.username }}</h2>
+    </div>
+
+    <!-- Personal Details -->
+    <div class="dashboard-section">
+        <h4 class="section-title">Personal Details</h4>
+        <ul class="list-group">
+            <li class="list-group-item">Email: {{ student.user.email }}</li>
+            <li class="list-group-item">Enrollment Number: {{ student.enrollment_number }}</li>
+            <li class="list-group-item">Department: {{ student.department.name }}</li>
+            <li class="list-group-item">Fees Paid: {{ student.fees_paid|yesno:"Yes,No" }}</li>
+        </ul>
+    </div>
+
+    <!-- Courses -->
+    <div class="dashboard-section">
+        <h4 class="section-title">Courses</h4>
+        <ul class="list-group">
+            {% for course in courses %}
+                <li class="list-group-item">{{ course.name }}</li>
+            {% empty %}
+                <li class="list-group-item">No courses enrolled.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Attendance -->
+    <div class="dashboard-section">
+        <h4 class="section-title">Attendance</h4>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Course</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for record in attendance %}
+                    <tr>
+                        <td>{{ record.date }}</td>
+                        <td>{{ record.course.name }}</td>
+                        <td>{{ record.present|yesno:"Present,Absent" }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="3" class="text-center">No attendance records available.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Assignments -->
+    <div class="dashboard-section">
+        <h4 class="section-title">Assignments</h4>
+        <ul class="list-group">
+            {% for assignment in assignments %}
+                <li class="list-group-item">
+                    <strong>{{ assignment.title }}</strong> - Due: {{ assignment.due_date }}
+                </li>
+            {% empty %}
+                <li class="list-group-item">No assignments available.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Notifications -->
+    <div class="dashboard-section">
+        <h4 class="section-title">Notifications</h4>
+        <ul class="list-group">
+            {% for notification in notifications %}
+                <li class="list-group-item">
+                    {{ notification.message }}
+                    <small class="text-muted">({{ notification.created_at|date:"M d, Y H:i" }})</small>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No notifications.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+
+</body>
+</html>
